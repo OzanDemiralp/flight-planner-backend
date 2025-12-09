@@ -7,4 +7,4 @@ const CitySchema = new Schema({
   country: String,
 });
 
-export const Flight = mongoose.model('City', CitySchema);
+export const City = mongoose.model('City', CitySchema);

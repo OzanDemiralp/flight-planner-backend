@@ -17,6 +17,10 @@ app.get('/test', (req, res) => {
   res.send('Hello!');
 });
 
+app.post('/planTrip', (req, res) => {
+  console.log('IT WORKS!');
+});
+
 app.listen(3000, () => {
   console.log('Serving on port 3000');
 });
