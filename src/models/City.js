@@ -6,4 +6,4 @@ const CitySchema = new Schema({
   name: { type: String, required: true },
 });
 
-module.exports = mongoose.Schema('City', CitySchema);
+export const Flight = mongoose.model('City', CitySchema);
