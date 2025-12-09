@@ -1,0 +1,59 @@
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build output
+dist/
+build/
+out/
+
+# Debug
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Optional npm cache
+.npm/
+
+# Optional yarn cache
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.pnp.*
+
+# Optional Parcel cache
+.cache/
+
+# Optional next.js
+.next/
+
+# Optional React build
+build/
+
+# Temporary files
+tmp/
+temp/
