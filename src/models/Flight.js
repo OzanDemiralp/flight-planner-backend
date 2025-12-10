@@ -9,4 +9,6 @@ const FlightSchema = new Schema({
   price: { type: Number, required: true },
 });
 
-export const Flight = mongoose.model('Flight', FlightSchema);
+const Flight = mongoose.model('Flight', FlightSchema);
+
+export default Flight;
