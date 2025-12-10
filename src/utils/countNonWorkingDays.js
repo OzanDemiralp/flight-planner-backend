@@ -10,7 +10,7 @@ export const holidays = [
   '2026-10-29',
 ];
 
-export default function countNonWorkingDays(
+export function countNonWorkingDays(
   startDate,
   endDate,
   holidaysArray,
