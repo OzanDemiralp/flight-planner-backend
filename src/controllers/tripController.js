@@ -1,6 +1,6 @@
-import { getTripBounds } from '../utils/tripBounds.js';
-import { getCandidateFlights } from '../utils/tripFlights.js';
-import { buildTrips } from '../utils/tripBuilder.js';
+import { getTripBounds } from '../utils/trips/tripBounds.js';
+import { getCandidateFlights } from '../utils/trips/tripFlights.js';
+import { buildTrips } from '../utils/trips/tripBuilder.js';
 
 export const planTrip = async (req, res) => {
   // destructure req body
