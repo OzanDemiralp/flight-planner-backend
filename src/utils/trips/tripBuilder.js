@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { countNonWorkingDays, holidays } from '../utils/countNonWorkingDays.js';
+import { countNonWorkingDays, holidays } from '../date/countNonWorkingDays.js';
 
 const DAY_UNIT = 'day';
 

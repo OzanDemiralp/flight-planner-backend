@@ -1,4 +1,4 @@
-import Flight from '../models/flight.js';
+import Flight from '../../models/flight.js';
 
 export async function getCandidateFlights({
   departureFrom,
