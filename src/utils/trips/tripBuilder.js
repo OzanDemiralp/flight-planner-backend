@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import { countNonWorkingDays, holidays } from '../date/countNonWorkingDays.js';
+import { countNonWorkingDays } from '../date/countNonWorkingDays.js';
+import { TR_HOLIDAYS_2026 } from '../date/holidays.js';
 
 const groupFlightsByDay = (flights) => {
   const flightsByDate = new Map();
@@ -19,7 +20,7 @@ const checkNonWorkingDays = (outboundDate, returnDate, minNonWorkingDays) => {
   const { nonWorkingDaysCount, meetsMinNonWorkingDays } = countNonWorkingDays(
     outboundDate.format('YYYY-MM-DD'),
     returnDate.format('YYYY-MM-DD'),
-    holidays,
+    TR_HOLIDAYS_2026,
     minNonWorkingDays
   );
   return {

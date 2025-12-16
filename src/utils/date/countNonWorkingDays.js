@@ -1,15 +1,5 @@
 import dayjs from 'dayjs';
 
-export const holidays = [
-  '2026-01-01',
-  '2026-04-23',
-  '2026-05-01',
-  '2026-05-19',
-  '2026-07-15',
-  '2026-08-30',
-  '2026-10-29',
-];
-
 export function countNonWorkingDays(
   startDate,
   endDate,
