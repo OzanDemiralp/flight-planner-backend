@@ -1,5 +1,5 @@
 import { getTripBounds } from '../utils/trips/tripBounds.js';
-import { getCandidateFlights } from '../utils/trips/tripFlights.js';
+import { getCandidateFlights } from '../utils/flights/queryFlights.js';
 import { buildTrips } from '../utils/trips/buildTrips.js';
 import sortTrips from '../utils/trips/sortTrips.js';
 import filterTrips from '../utils/trips/filterTrips.js';
