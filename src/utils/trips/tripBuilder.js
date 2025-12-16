@@ -1,8 +1,6 @@
 import dayjs from 'dayjs';
 import { countNonWorkingDays, holidays } from '../date/countNonWorkingDays.js';
 
-const DAY_UNIT = 'day';
-
 const groupFlightsByDay = (flights) => {
   const flightsByDate = new Map();
   flights.forEach((flight) => {
@@ -47,7 +45,7 @@ export function buildTrips({
     const outboundDate = dayjs(outboundFlight.departureDateTime).startOf('day');
 
     //calculate desired return date based on vacationLength
-    const desiredReturnDate = outboundDate.add(vacationLength, DAY_UNIT);
+    const desiredReturnDate = outboundDate.add(vacationLength, 'day');
 
     //see whether there are candidate return flights for the outbound flight
     const key = desiredReturnDate.format('YYYY-MM-DD');
