@@ -39,6 +39,7 @@ export const planTripSchema = Joi.object({
       }).unknown(false)
     )
     .min(1)
+    .unique('by')
     .default([{ by: 'totalPrice', order: 'asc' }]),
 }).options({
   abortEarly: false, // return all errors
