@@ -26,15 +26,11 @@ export const planTripSchema = Joi.object({
 
   filters: Joi.object({
     maxTotalPrice: Joi.number().min(0),
-    maxVacationDaysUsed: Joi.number().integer().min(0).max(30),
+    maxWorkDaysUsed: Joi.number().integer().min(0).max(30),
   }).default({}),
 
   sort: Joi.object({
-    by: Joi.string().valid(
-      'totalPrice',
-      'vacationDaysUsed',
-      'nonWorkingDaysCount'
-    ),
+    by: Joi.string().valid('totalPrice', 'workDaysUsed', 'nonWorkingDaysCount'),
     order: Joi.string().valid('asc', 'desc'),
   }).default({ by: 'totalPrice', order: 'asc' }),
 }).options({
