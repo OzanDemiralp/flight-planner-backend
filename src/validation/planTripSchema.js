@@ -29,10 +29,17 @@ export const planTripSchema = Joi.object({
     maxWorkDaysUsed: Joi.number().integer().min(0).max(30),
   }).default({}),
 
-  sort: Joi.object({
-    by: Joi.string().valid('totalPrice', 'workDaysUsed', 'nonWorkingDaysCount'),
-    order: Joi.string().valid('asc', 'desc'),
-  }).default({ by: 'totalPrice', order: 'asc' }),
+  sort: Joi.array()
+    .items(
+      Joi.object({
+        by: Joi.string()
+          .valid('totalPrice', 'workDaysUsed', 'nonWorkingDaysCount')
+          .required(),
+        order: Joi.string().valid('asc', 'desc').default('asc'),
+      }).unknown(false)
+    )
+    .min(1)
+    .default([{ by: 'totalPrice', order: 'asc' }]),
 }).options({
   abortEarly: false, // return all errors
   stripUnknown: true, // drop random things from request body
