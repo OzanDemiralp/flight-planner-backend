@@ -23,6 +23,20 @@ export const planTripSchema = Joi.object({
       'any.required': '"searchWindow.endDate" is required',
     }),
   }).required(),
+
+  filters: Joi.object({
+    maxTotalPrice: Joi.number().min(0),
+    maxVacationDaysUsed: Joi.number().integer().min(0).max(30),
+  }).default({}),
+
+  sort: Joi.object({
+    by: Joi.string().valid(
+      'totalPrice',
+      'vacationDaysUsed',
+      'nonWorkingDaysCount'
+    ),
+    order: Joi.string().valid('asc', 'desc'),
+  }).default({ by: 'totalPrice', order: 'asc' }),
 }).options({
   abortEarly: false, // return all errors
   stripUnknown: true, // drop random things from request body
