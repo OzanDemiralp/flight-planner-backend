@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { countNonWorkingDays } from '../date/countNonWorkingDays.js';
 import { TR_HOLIDAYS_2026 } from '../date/holidays.js';
+import tripExplanation from './tripExplanation.js';
 
 const groupFlightsByDay = (flights) => {
   const flightsByDate = new Map();
@@ -14,19 +15,6 @@ const groupFlightsByDay = (flights) => {
     flightsByDate.get(key).push(flight);
   });
   return flightsByDate;
-};
-
-const checkNonWorkingDays = (outboundDate, returnDate, minNonWorkingDays) => {
-  const { nonWorkingDaysCount, meetsMinNonWorkingDays } = countNonWorkingDays(
-    outboundDate.format('YYYY-MM-DD'),
-    returnDate.format('YYYY-MM-DD'),
-    TR_HOLIDAYS_2026,
-    minNonWorkingDays
-  );
-  return {
-    ok: meetsMinNonWorkingDays,
-    nonWorkingDaysCount,
-  };
 };
 
 export function buildTrips({
@@ -59,20 +47,21 @@ export function buildTrips({
 
       if (!returnDate.isAfter(outboundDate)) return;
 
-      const { ok, nonWorkingDaysCount } = checkNonWorkingDays(
+      const explanation = tripExplanation(
         outboundDate,
         returnDate,
-        minNonWorkingDays
+        TR_HOLIDAYS_2026
       );
 
-      if (!ok) return;
+      //validate whether trip meets requested minNonWorkingDays
+      if (explanation.nonWorkingDaysCount < minNonWorkingDays) return;
 
       //if here then it is a valid outbound-return pair therefore a valid trip
       foundTrips.push({
         outboundFlight,
         returnFlight,
         totalPrice: outboundFlight.price + returnFlight.price,
-        nonWorkingDays: nonWorkingDaysCount,
+        details: explanation,
       });
     });
   });
