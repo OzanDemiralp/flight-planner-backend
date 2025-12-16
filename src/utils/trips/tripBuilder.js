@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { countNonWorkingDays } from '../date/countNonWorkingDays.js';
 import { TR_HOLIDAYS_2026 } from '../date/holidays.js';
 import tripExplanation from './tripExplanation.js';
 
