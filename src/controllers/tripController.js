@@ -1,6 +1,7 @@
 import { getTripBounds } from '../utils/trips/tripBounds.js';
 import { getCandidateFlights } from '../utils/trips/tripFlights.js';
-import { buildTrips } from '../utils/trips/tripBuilder.js';
+import { buildTrips } from '../utils/trips/buildTrips.js';
+import sortTrips from '../utils/trips/sortTrips.js';
 
 export const planTrip = async (req, res) => {
   // destructure req body
@@ -12,6 +13,8 @@ export const planTrip = async (req, res) => {
     minNonWorkingDays,
     vacationLength,
     searchWindow,
+    filters,
+    sort,
   } = req.body;
 
   //calculate bounds for trips to be searched
@@ -36,7 +39,7 @@ export const planTrip = async (req, res) => {
     earliestReturn,
   });
 
-  const trips = buildTrips({
+  let trips = buildTrips({
     outboundFlights,
     returnFlights,
     vacationLength,
@@ -44,6 +47,8 @@ export const planTrip = async (req, res) => {
     end,
     earliestReturn,
   });
+
+  trips = sortTrips(trips, sort);
 
   //respond with valid trips
   return res.json({
