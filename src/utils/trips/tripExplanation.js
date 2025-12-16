@@ -13,7 +13,7 @@ export default function tripExplanation(
   );
 
   const nonWorkingDates = [];
-  const vacationDates = [];
+  const workDates = [];
 
   while (current.isSame(end) || current.isBefore(end)) {
     const currentDate = current.format('YYYY-MM-DD');
@@ -22,15 +22,15 @@ export default function tripExplanation(
 
     if (isWeekend || isHoliday) {
       nonWorkingDates.push(currentDate);
-    } else vacationDates.push(currentDate);
+    } else workDates.push(currentDate);
 
     current = current.add(1, 'day');
   }
   return {
     nonWorkingDates,
-    vacationDates,
+    workDates,
     nonWorkingDaysCount: nonWorkingDates.length,
-    vacationDaysUsed: vacationDates.length,
-    totalDays: nonWorkingDates.length + vacationDates.length,
+    workDaysUsed: workDates.length,
+    totalDays: nonWorkingDates.length + workDates.length,
   };
 }
