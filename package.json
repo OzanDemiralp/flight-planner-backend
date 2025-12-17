@@ -1,10 +1,11 @@
 {
   "name": "flight-planner-backend",
   "version": "1.0.0",
-  "main": "app.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "cross-env NODE_ENV=test jest"
   },
   "author": "ozan",
   "license": "ISC",
@@ -17,5 +18,11 @@
     "joi": "^18.0.2",
     "mongoose": "^9.0.1",
     "nodemon": "^3.1.11"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0",
+    "jest": "^30.2.0",
+    "mongodb-memory-server": "^11.0.0",
+    "supertest": "^7.1.4"
   }
 }
