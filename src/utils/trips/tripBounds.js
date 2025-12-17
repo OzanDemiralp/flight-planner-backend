@@ -1,4 +1,7 @@
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc.js';
+
+dayjs.extend(utc);
 
 const DAY_UNIT = 'day';
 
@@ -6,8 +9,8 @@ export function getTripBounds(searchWindow, vacationLength) {
   //destructure searchwindow
   const { startDate, endDate } = searchWindow;
 
-  const start = dayjs(startDate).startOf('day');
-  const end = dayjs(endDate).startOf('day');
+  const start = dayjs.utc(startDate).startOf('day');
+  const end = dayjs.utc(endDate).startOf('day');
 
   //quick validations
   if (end.isBefore(start)) {

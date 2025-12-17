@@ -1,11 +1,15 @@
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc.js';
 import { TR_HOLIDAYS_2026 } from '../date/holidays.js';
 import tripExplanation from './tripExplanation.js';
+
+dayjs.extend(utc);
 
 const groupFlightsByDay = (flights) => {
   const flightsByDate = new Map();
   flights.forEach((flight) => {
-    const key = dayjs(flight.departureDateTime)
+    const key = dayjs
+      .utc(flight.departureDateTime)
       .startOf('day')
       .format('YYYY-MM-DD');
     if (!flightsByDate.has(key)) {
@@ -30,7 +34,9 @@ export function buildTrips({
 
   //match the outbound flights with corresponding return flights
   outboundFlights.forEach((outboundFlight) => {
-    const outboundDate = dayjs(outboundFlight.departureDateTime).startOf('day');
+    const outboundDate = dayjs
+      .utc(outboundFlight.departureDateTime)
+      .startOf('day');
 
     //calculate desired return date based on vacationLength
     const desiredReturnDate = outboundDate.add(vacationLength, 'day');
@@ -42,7 +48,9 @@ export function buildTrips({
 
     //if there are, check whether outbound-return pair satsifies non work days requirement
     candidates.forEach((returnFlight) => {
-      const returnDate = dayjs(returnFlight.departureDateTime).startOf('day');
+      const returnDate = dayjs
+        .utc(returnFlight.departureDateTime)
+        .startOf('day');
 
       if (!returnDate.isAfter(outboundDate)) return;
 
