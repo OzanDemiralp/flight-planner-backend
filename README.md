@@ -54,12 +54,24 @@ Example request payload:
   "departureTo": "SJJ",
   "returnFrom": "VIE",
   "returnTo": "IST",
+
   "vacationLength": 5,
-  "minNonWorkingDays": 3,
+  "minNonWorkingDays": 2,
+
   "searchWindow": {
     "startDate": "2026-05-01",
-    "endDate": "2026-05-31"
-  }
+    "endDate": "2026-05-20"
+  },
+
+  "filters": {
+    "maxTotalPrice": 400,
+    "maxWorkDaysUsed": 4
+  },
+
+  "sort": [
+    { "by": "workDaysUsed", "order": "asc" },
+    { "by": "totalPrice", "order": "asc" }
+  ]
 }
 ```
 
