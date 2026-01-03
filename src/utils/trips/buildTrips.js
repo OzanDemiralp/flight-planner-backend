@@ -5,6 +5,8 @@ import tripExplanation from './tripExplanation.js';
 
 dayjs.extend(utc);
 
+const makeTripId = (outId, retId) => `${outId}_${retId}`;
+
 const groupFlightsByDay = (flights) => {
   const flightsByDate = new Map();
   flights.forEach((flight) => {
@@ -65,6 +67,7 @@ export function buildTrips({
 
       //if here then it is a valid outbound-return pair therefore a valid trip
       foundTrips.push({
+        id: makeTripId(outboundFlight._id, returnFlight._id),
         outboundFlight,
         returnFlight,
         totalPrice: outboundFlight.price + returnFlight.price,
