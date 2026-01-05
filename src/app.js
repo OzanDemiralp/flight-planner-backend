@@ -8,6 +8,7 @@ import { sessionMiddleware } from './config/session.js';
 import { setupPassport } from './config/passport.js';
 
 import authRoutes from './routes/authRoutes.js';
+import requireAuth from './middleware/requireAuth.js';
 
 const app = express();
 app.use(express.json());
@@ -34,7 +35,7 @@ app.use(passport.session());
 //routes
 app.get('/test', (req, res) => res.send('Hello!'));
 
-app.post('/planTrip', validate(planTripSchema), planTrip);
+app.post('/planTrip', requireAuth, validate(planTripSchema), planTrip);
 
 app.use('/auth', authRoutes);
 
