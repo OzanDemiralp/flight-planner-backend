@@ -3,22 +3,30 @@ import passport from 'passport';
 import User from '../models/user.js';
 
 export async function register(req, res) {
-  const { email, password } = req.body;
+  const { name, email, password } = req.body;
 
+  const trimmedName = String(name || '').trim();
   const normalizedEmail = String(email || '')
     .toLowerCase()
     .trim();
-  if (!normalizedEmail || !password) {
-    return res.status(400).json({ message: 'Email and password are required' });
+
+  if (!trimmedName || !normalizedEmail || !password) {
+    return res
+      .status(400)
+      .json({ message: 'Name, email and password are required' });
   }
 
   const exists = await User.findOne({ email: normalizedEmail });
   if (exists) return res.status(409).json({ message: 'Email already in use' });
 
   const passwordHash = await bcrypt.hash(password, 12);
-  const user = await User.create({ email: normalizedEmail, passwordHash });
+  const user = await User.create({
+    name: trimmedName,
+    email: normalizedEmail,
+    passwordHash,
+  });
 
-  res.status(201).json({ id: user._id, email: user.email });
+  res.status(201).json({ id: user._id, name: user.name, email: user.email });
 }
 
 export function login(req, res, next) {
@@ -29,7 +37,7 @@ export function login(req, res, next) {
 
     req.logIn(user, (err2) => {
       if (err2) return next(err2);
-      return res.json({ id: user._id, email: user.email });
+      return res.json({ name: user.name, id: user._id, email: user.email });
     });
   })(req, res, next);
 }

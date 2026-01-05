@@ -30,7 +30,7 @@ export function setupPassport() {
 
   passport.deserializeUser(async (id, done) => {
     try {
-      const user = await User.findById(id).select('_id email');
+      const user = await User.findById(id).select('_id email name');
       done(null, user);
     } catch (err) {
       done(err);
