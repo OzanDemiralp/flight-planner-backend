@@ -10,14 +10,14 @@ export function sessionMiddleware() {
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-      mongoUrl: process.env.MONGO_URI,
+      mongoUrl: process.env.MONGO_URL,
       collectionName: 'sessions',
-      ttl: 60 * 60 * 24 * 14, // 14 gün
+      ttl: 60 * 60 * 24 * 14,
     }),
     cookie: {
       httpOnly: true,
-      secure: isProd, // prod HTTPS şart
-      sameSite: isProd ? 'none' : 'lax', // FE farklı domain ise prod'da none
+      secure: isProd,
+      sameSite: isProd ? 'none' : 'lax',
       maxAge: 1000 * 60 * 60 * 24 * 14,
     },
   });
