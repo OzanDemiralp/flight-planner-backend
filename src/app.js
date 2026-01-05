@@ -6,7 +6,7 @@ import { errorHandler } from './middleware/errorHandler.js';
 import { planTripSchema } from './validation/planTripSchema.js';
 import { sessionMiddleware } from './config/session.js';
 import { setupPassport } from './config/passport.js';
-
+import passport from 'passport';
 import authRoutes from './routes/authRoutes.js';
 import requireAuth from './middleware/requireAuth.js';
 
