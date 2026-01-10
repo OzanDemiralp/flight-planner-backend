@@ -8,6 +8,7 @@ import { sessionMiddleware } from './config/session.js';
 import { setupPassport } from './config/passport.js';
 import passport from 'passport';
 import authRoutes from './routes/authRoutes.js';
+import savedTripsRoutes from './routes/savedTripsRoutes.js';
 import requireAuth from './middleware/requireAuth.js';
 
 const app = express();
@@ -38,6 +39,8 @@ app.get('/test', (req, res) => res.send('Hello!'));
 app.post('/planTrip', requireAuth, validate(planTripSchema), planTrip);
 
 app.use('/auth', authRoutes);
+
+app.use('/savedTrips', savedTripsRoutes);
 
 app.all(/(.*)/, (req, res) => {
   res.status(404).json({ success: false, message: 'Route not found' });
