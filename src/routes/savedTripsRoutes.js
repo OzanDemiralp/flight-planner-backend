@@ -4,6 +4,6 @@ import requireAuth from '../middleware/requireAuth.js';
 
 const router = express.Router();
 
-router.post('/', requireAuth, saveSavedTrips);
+router.post('/saveTrips', requireAuth, saveSavedTrips);
 
 export default router;
