@@ -40,7 +40,7 @@ app.post('/planTrip', requireAuth, validate(planTripSchema), planTrip);
 
 app.use('/auth', authRoutes);
 
-app.use('/savedTrips', savedTripsRoutes);
+app.use('/', savedTripsRoutes);
 
 app.all(/(.*)/, (req, res) => {
   res.status(404).json({ success: false, message: 'Route not found' });
