@@ -1,5 +1,6 @@
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import 'dotenv/config';
 
 export function sessionMiddleware() {
   const isProd = process.env.NODE_ENV === 'production';
