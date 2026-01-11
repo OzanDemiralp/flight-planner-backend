@@ -5,6 +5,20 @@ import app from '../../src/app.js';
 import Flight from '../../src/models/flight.js';
 
 describe('POST/planTrip integration test', () => {
+  let agent;
+
+  beforeEach(async () => {
+    agent = request.agent(app);
+
+    await agent
+      .post('/auth/register')
+      .send({ name: 'Test User', email: 'test@mail.com', password: '123456' });
+    await agent.post('/auth/login').send({
+      email: 'test@mail.com',
+      password: '123456',
+    });
+  });
+
   test('happy path returns trips when flights match', async () => {
     await Flight.create([
       {
@@ -33,7 +47,7 @@ describe('POST/planTrip integration test', () => {
       searchWindow: { startDate: '2026-05-01', endDate: '2026-05-31' },
     };
 
-    const response = await request(app).post('/planTrip').send(requestPayload);
+    const response = await agent.post('/planTrip').send(requestPayload);
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toHaveProperty('trips');
@@ -85,7 +99,7 @@ describe('POST/planTrip integration test', () => {
       searchWindow: { startDate: '2026-05-01', endDate: '2026-05-31' },
     };
 
-    const response = await request(app).post('/planTrip').send(requestPayload);
+    const response = await agent.post('/planTrip').send(requestPayload);
 
     expect(response.statusCode).toBe(200);
     expect(response.body.trips).toEqual([]);
@@ -93,7 +107,7 @@ describe('POST/planTrip integration test', () => {
   });
 
   test('fails validation when payload is missing required fields', async () => {
-    const response = await request(app).post('/planTrip').send({
+    const response = await agent.post('/planTrip').send({
       vacationLength: 5,
     });
 
