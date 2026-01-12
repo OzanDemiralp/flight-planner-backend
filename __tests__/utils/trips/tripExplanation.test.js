@@ -45,6 +45,17 @@ describe('tripExplanation', () => {
     expect(nonWorkingDaysCount).toBe(1);
     expect(nonWorkingDates).toEqual(['2026-05-03']);
   });
+
+  test('returns zero non-working days when range contains only weekdays and no holidays', () => {
+    const { nonWorkingDaysCount, nonWorkingDates } = tripExplanation(
+      '2026-05-04',
+      '2026-05-08',
+      []
+    );
+
+    expect(nonWorkingDaysCount).toBe(0);
+    expect(nonWorkingDates).toEqual([]);
+  });
 });
 
-// npm test -- __tests__/utils/trips/tripExplanation.test.js
+// npm test -- __tests__/utils/trips
