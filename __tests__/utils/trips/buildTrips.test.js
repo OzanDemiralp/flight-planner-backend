@@ -149,4 +149,26 @@ describe('buildTrips', () => {
     expect(trips[0].totalPrice).toBe(120);
     expect(tripExplanationMock).toHaveBeenCalledTimes(2);
   });
+
+  test('passes when nonWorkingDaysCount equals minNonWorkingDays (boundary case)', () => {
+    tripExplanationMock.mockReturnValue({ nonWorkingDaysCount: 3 });
+
+    const outboundFlights = [
+      flight({ dep: '2026-05-01T10:00:00.000Z', price: 40 }),
+    ];
+    const returnFlights = [
+      flight({ dep: '2026-05-06T10:00:00.000Z', price: 60 }),
+    ];
+
+    const trips = buildTrips({
+      outboundFlights,
+      returnFlights,
+      vacationLength: 5,
+      minNonWorkingDays: 3,
+    });
+
+    expect(trips).toHaveLength(1);
+    expect(trips[0].totalPrice).toBe(100);
+    expect(tripExplanationMock).toHaveBeenCalledTimes(1);
+  });
 });
