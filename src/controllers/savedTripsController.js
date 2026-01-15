@@ -1,5 +1,10 @@
 import mongoose from 'mongoose';
 import SavedTrip from '../models/savedTrip.js';
+import dayjs from 'dayjs';
+import tripExplanation from '../utils/trips/tripExplanation.js';
+import { TR_HOLIDAYS_2026 } from '../utils/date/holidays.js';
+
+const makeTripId = (outId, retId) => `${outId}_${retId}`;
 
 const parseTripId = (tripId) => {
   if (typeof tripId !== 'string') return null;
@@ -63,5 +68,45 @@ export async function saveSavedTrips(req, res, next) {
     });
   } catch (err) {
     return next(err);
+  }
+}
+
+export async function getSavedTrips(req, res, next) {
+  try {
+    const ownerId = req.user._id;
+
+    const savedTrips = await SavedTrip.find({ owner: ownerId })
+      .sort({ createdAt: -1 })
+      .populate('outboundFlight')
+      .populate('returnFlight')
+      .lean();
+
+    const trips = savedTrips
+      .filter((s) => s.outboundFlight && s.returnFlight)
+      .map((s) => {
+        const out = s.outboundFlight;
+        const ret = s.returnFlight;
+
+        const outboundDate = dayjs.utc(out.departureDateTime).startOf('day');
+        const returnDate = dayjs.utc(ret.departureDateTime).startOf('day');
+
+        const details = tripExplanation(
+          outboundDate,
+          returnDate,
+          TR_HOLIDAYS_2026
+        );
+
+        return {
+          id: makeTripId(String(out._id), String(ret._id)),
+          outboundFlight: out,
+          returnFlight: ret,
+          totalPrice: (out.price ?? 0) + (ret.price ?? 0),
+          details,
+        };
+      });
+
+    return res.status(200).json({ trips });
+  } catch (err) {
+    next(err);
   }
 }
