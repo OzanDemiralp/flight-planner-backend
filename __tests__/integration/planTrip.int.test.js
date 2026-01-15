@@ -106,11 +106,48 @@ describe('POST/planTrip integration test', () => {
     expect(response.body.tripCount).toBe(0);
   });
 
+  test('fails validation when searchWindow startDate is after endDate', async () => {
+    const requestPayload = {
+      departureFrom: 'IST',
+      departureTo: 'SJJ',
+      returnFrom: 'VIE',
+      returnTo: 'IST',
+      minNonWorkingDays: 1,
+      vacationLength: 5,
+      searchWindow: {
+        startDate: '2026-05-10',
+        endDate: '2026-05-01',
+      },
+    };
+
+    const response = await agent.post('/planTrip').send(requestPayload);
+
+    expect([400, 422]).toContain(response.statusCode);
+  });
+
   test('fails validation when payload is missing required fields', async () => {
     const response = await agent.post('/planTrip').send({
       vacationLength: 5,
     });
 
     expect([400, 422]).toContain(response.statusCode);
+  });
+
+  describe('POST /planTrip auth guard', () => {
+    test('returns 401 when not authenticated', async () => {
+      const requestPayload = {
+        departureFrom: 'IST',
+        departureTo: 'SJJ',
+        returnFrom: 'VIE',
+        returnTo: 'IST',
+        minNonWorkingDays: 2,
+        vacationLength: 5,
+        searchWindow: { startDate: '2026-05-01', endDate: '2026-05-31' },
+      };
+
+      const res = await request(app).post('/planTrip').send(requestPayload);
+
+      expect(res.statusCode).toBe(401);
+    });
   });
 });
