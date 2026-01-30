@@ -110,3 +110,53 @@ export async function getSavedTrips(req, res, next) {
     next(err);
   }
 }
+
+export async function deleteSavedTrips(req, res, next) {
+  try {
+    const userId = req.user._id;
+
+    const { tripIds } = req.body;
+    if (!Array.isArray(tripIds) || tripIds.length === 0) {
+      return res
+        .status(400)
+        .json({ message: 'tripIds must be a non-empty array' });
+    }
+
+    const pairs = [];
+    const seen = new Set();
+
+    for (const t of tripIds) {
+      const parsed = parseTripId(t);
+      if (!parsed) continue;
+
+      const key = `${parsed.outId}_${parsed.retId}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+
+      pairs.push(parsed);
+    }
+
+    if (pairs.length === 0) {
+      return res.status(400).json({ message: 'No valid tripIds provided' });
+    }
+
+    const or = pairs.map(({ outId, retId }) => ({
+      outboundFlight: outId,
+      returnFlight: retId,
+    }));
+
+    const result = await SavedTrip.deleteMany({
+      owner: userId,
+      $or: or,
+    });
+
+    return res.status(200).json({
+      message: 'Saved trips deleted',
+      requested: tripIds.length,
+      valid: pairs.length,
+      deleted: result.deletedCount ?? 0,
+    });
+  } catch (err) {
+    return next(err);
+  }
+}
