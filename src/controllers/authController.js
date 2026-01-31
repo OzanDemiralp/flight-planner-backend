@@ -3,26 +3,16 @@ import passport from 'passport';
 import User from '../models/user.js';
 
 export async function register(req, res) {
-  const { name, email, password } = req.body;
+  const { name, email, password } = req.body; // artık clean
 
-  const trimmedName = String(name || '').trim();
-  const normalizedEmail = String(email || '')
-    .toLowerCase()
-    .trim();
-
-  if (!trimmedName || !normalizedEmail || !password) {
-    return res
-      .status(400)
-      .json({ message: 'Name, email and password are required' });
-  }
-
-  const exists = await User.findOne({ email: normalizedEmail });
+  const exists = await User.findOne({ email });
   if (exists) return res.status(409).json({ message: 'Email already in use' });
 
   const passwordHash = await bcrypt.hash(password, 12);
+
   const user = await User.create({
-    name: trimmedName,
-    email: normalizedEmail,
+    name,
+    email,
     passwordHash,
   });
 
