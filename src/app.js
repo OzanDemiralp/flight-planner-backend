@@ -1,5 +1,8 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import mongoSanitize from 'express-mongo-sanitize';
 import { planTrip } from './controllers/tripController.js';
 import { validate } from './middleware/validate.js';
 import { errorHandler } from './middleware/errorHandler.js';
@@ -12,22 +15,58 @@ import savedTripsRoutes from './routes/savedTripsRoutes.js';
 import requireAuth from './middleware/requireAuth.js';
 
 const app = express();
-app.use(express.json());
-const FRONTEND_ORIGIN =
-  process.env.NODE_ENV === 'production'
-    ? process.env.FRONTEND_ORIGIN
-    : 'http://localhost:3001';
+
+const isProd = process.env.NODE_ENV === 'production';
+
+app.set('trust proxy', 1);
+
+//security headers
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  }),
+);
+
+//body parsing
+app.use(express.json({ limit: '1mb' }));
+
+//prevent mongo operator injection in req
+app.use(mongoSanitize());
+
+//cors
+const FRONTEND_ORIGIN = isProd
+  ? process.env.FRONTEND_ORIGIN
+  : 'http://localhost:3001';
 
 app.use(
   cors({
     origin: FRONTEND_ORIGIN,
     credentials: true,
-  })
+  }),
 );
 
-app.set('trust proxy', 1);
+//global rate limit
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 300, // çok sıkı değil; sonra düşürürüz
+    standardHeaders: true,
+    legacyHeaders: false,
+  }),
+);
 
-// session + passport
+//login endpoint rate limit
+app.use(
+  '/auth/login',
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 20,
+    standardHeaders: true,
+    legacyHeaders: false,
+  }),
+);
+
+//session + passport
 app.use(sessionMiddleware());
 setupPassport();
 app.use(passport.initialize());
@@ -39,7 +78,6 @@ app.get('/test', (req, res) => res.send('Hello!'));
 app.post('/planTrip', requireAuth, validate(planTripSchema), planTrip);
 
 app.use('/auth', authRoutes);
-
 app.use('/', savedTripsRoutes);
 
 app.all(/(.*)/, (req, res) => {
