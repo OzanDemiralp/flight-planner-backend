@@ -6,8 +6,6 @@ import app from './app.js';
 const dbUrl = process.env.MONGO_URL;
 const port = process.env.PORT || 3000;
 
-mongoose.set('sanitizeFilter', true);
-
 mongoose.connect(dbUrl).catch((err) => {
   console.error('Mongo connection error:', err);
   process.exit(1);
