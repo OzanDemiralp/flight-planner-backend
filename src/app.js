@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import mongoSanitize from 'express-mongo-sanitize';
 import { planTrip } from './controllers/tripController.js';
 import { validate } from './middleware/validate.js';
 import { errorHandler } from './middleware/errorHandler.js';
@@ -29,9 +28,6 @@ app.use(
 
 //body parsing
 app.use(express.json({ limit: '1mb' }));
-
-//prevent mongo operator injection in req
-app.use(mongoSanitize());
 
 //cors
 const FRONTEND_ORIGIN = isProd
