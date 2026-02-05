@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
-import { Flight } from '../src/models/flight.js';
 import dotenv from 'dotenv';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import Flight from '../src/models/flight.js';
 
 dotenv.config();
 const dbUrl = process.env.MONGO_URL;
