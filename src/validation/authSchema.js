@@ -19,7 +19,7 @@ export const registerSchema = Joi.object({
   password: Joi.string().min(6).max(72).required().messages({
     'string.base': '"password" must be a string',
     'string.empty': '"password" is required',
-    'string.min': '"password" must be at least 8 characters',
+    'string.min': '"password" must be at least 6 characters',
     'string.max': '"password" must be at most 72 characters',
     'any.required': '"password" is required',
   }),
