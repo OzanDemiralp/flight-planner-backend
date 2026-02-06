@@ -1,20 +1,27 @@
-# Flight Planner Backend (WIP)
+# Flight Planner Backend
 
 Backend service for a vacation-oriented flight planner.
-This backend focuses on core trip-planning logic and exposes an API
+This backend focuses on core trip-planning logic and exposes an API 
 to find valid outbound–return flight combinations based on vacation length
 and non-working days.
 
-> This project is a work in progress.  
-> Frontend, authentication, session handling, and trip persistence
-> will be implemented in later stages.
+This service is part of a full-stack Flight Planner application and
+handles authentication, session management, and trip persistence.
+
+## Related Links
+
+- [Live Website](https://flight-planner-frontend-new.vercel.app/) 
+- [Frontend Repository](https://github.com/OzanDemiralp/flight-planner-frontend-new)
 
 ## What This Backend Does
 
-- Matches outbound and return flights using a day-based vacation model
-- Calculates non-working days (weekends + holidays)
-- Filters trips based on minimum non-working day requirements
-- Returns valid trip combinations with pricing and detailed explanations
+- Matches outbound and return flights using a day-based vacation model  
+- Calculates non-working days (weekends + holidays)  
+- Filters trips based on minimum non-working day requirements  
+- Returns valid trip combinations with pricing and detailed explanations  
+- Handles user authentication and session-based access control  
+- Persists user-specific data such as saved trips  
+- Exposes a RESTful API designed for consumption by a separate frontend client  
 
 ## Tech Stack
 
@@ -24,6 +31,8 @@ and non-working days.
 - Day.js
 - Joi
 - Jest & Supertest (unit and integration testing)
+- Passport.js & express-session (authentication)
+
 
 ## Project Structure (Simplified)
 
@@ -108,10 +117,3 @@ npm test -- path/to/testfile.js
 - Core trip-planning logic is covered by unit tests.
 - API behavior and wiring are covered by integration tests using
   an in-memory MongoDB instance.
-
-## Planned Next Steps
-
-- Frontend implementation
-- Authentication and session management
-- Saving and managing user trips
-- User-specific trip history
