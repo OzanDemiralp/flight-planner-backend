@@ -10,7 +10,7 @@ handles authentication, session management, and trip persistence.
 
 ## Related Links
 
-- [Live Website](https://flight-planner-frontend-new.vercel.app/) - IMPORTANT website is still accesible but backend will throw an error because mongo cluster is down due to jeopolitical situation
+- [Live Website](https://flight-planner-frontend-new.vercel.app/) - IMPORTANT website is still accesible but backend will throw an error because mongo cluster is down due to geopolitical situation
 - [Frontend Repository](https://github.com/OzanDemiralp/flight-planner-frontend-new)
 
 ## What This Backend Does
